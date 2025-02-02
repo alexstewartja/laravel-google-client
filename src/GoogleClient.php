@@ -419,7 +419,7 @@ class GoogleClient extends \Google_Client
             $this->storedTokenToCredentials();
         }
 
-        return $token;
+        return $profile;
     }
 
     /**
