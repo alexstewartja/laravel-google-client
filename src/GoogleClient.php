@@ -383,7 +383,7 @@ class GoogleClient extends \Google_Client
      * authenticate the user with the google auth code
      *
      * @param  string|null  $code
-     * @return array
+     * @return \Google\Service\Oauth2\Userinfo|null
      *
      * @throws \Exception
      */
