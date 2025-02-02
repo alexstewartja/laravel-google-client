@@ -383,7 +383,7 @@ class GoogleClient extends \Google_Client
      * authenticate the user with the google auth code
      *
      * @param  string|null  $code
-     * @return \Google\Service\Oauth2\Userinfo|null
+     * @return array
      *
      * @throws \Exception
      */
@@ -419,7 +419,7 @@ class GoogleClient extends \Google_Client
             $this->storedTokenToCredentials();
         }
 
-        return $profile;
+        return $token;
     }
 
     /**
