@@ -71,6 +71,7 @@ trait Configurable
             'redirect_uri' => $envConfig['redirect_uri'],
             'scopes' => $envConfig['scopes'],
             'access_type' => 'offline',
+            'prompt' => 'consent',
         ];
 
         if ($envConfig['application_name']) {
