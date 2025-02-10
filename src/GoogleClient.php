@@ -430,7 +430,7 @@ class GoogleClient extends \Google_Client
      *
      * @throws \Exception
      */
-    public function authorize($code = null)
+    public function authorizeWithCode($code = null)
     {
         $token = $this->authenticate($code);
         return [
