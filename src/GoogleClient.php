@@ -423,6 +423,24 @@ class GoogleClient extends \Google_Client
     }
 
     /**
+     * authenticate the user with the google auth code with user information
+     *
+     * @param  string|null  $code
+     * @return array
+     *
+     * @throws \Exception
+     */
+    public function authorize($code = null)
+    {
+        $token = $this->authenticate($code);
+        return [
+            'token' => $token,
+            'profile' => $this->profile,
+            'email' => $this->email,
+        ];
+    }
+
+    /**
      * get user profile from google
      *
      * @return \Google\Service\Oauth2\Userinfo|null
