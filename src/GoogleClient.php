@@ -403,10 +403,14 @@ class GoogleClient extends \Google_Client
 
         $profile = $this->getUserProfile();
 
-        $this->setProfile(json_decode(json_encode($profile), true));
-        if ($profile && $profile->email) {
-            $this->setEmail($profile->email);
+        $profileArray = json_decode(json_encode($profile), true);
+        $email = empty($profileArray['email']) ? null : $profileArray['email'];
+        if (!$email) {
+            throw new \Exception(StaticMessages::EMAIL_NOT_FOUND);
         }
+
+        $this->setProfile($profileArray);
+        $this->setEmail($email);
 
         $this->writeTokenToStorage();
         $this->storedTokenToCredentials();
@@ -415,29 +419,14 @@ class GoogleClient extends \Google_Client
             $this->credentialsMode !== 'multiple-user-multiple-accounts' ||
             !$this->storedCredentials['default_account']
         ) {
-            $this->writeDefaultAccountToStorage($this->email);
+            $this->writeDefaultAccountToStorage($email);
             $this->storedTokenToCredentials();
         }
 
-        return $token;
-    }
+        $token['profile'] = $profileArray;
+        $token['email'] = $email;
 
-    /**
-     * authenticate the user with the google auth code with user information
-     *
-     * @param  string|null  $code
-     * @return array
-     *
-     * @throws \Exception
-     */
-    public function authorizeWithCode($code = null)
-    {
-        $token = $this->authenticate($code);
-        return [
-            'token' => $token,
-            'profile' => $this->profile,
-            'email' => $this->email,
-        ];
+        return $token;
     }
 
     /**
