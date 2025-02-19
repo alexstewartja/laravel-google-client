@@ -130,7 +130,14 @@ class GoogleClient extends \Google_Client
 
         $this->storedTokenToCredentials();
 
-        $this->refreshTokenIfNecessary();
+        try {
+            $this->refreshTokenIfNecessary();
+        } catch (\Exception $e) {
+            $this->setEmail(null);
+            $this->setProfile([]);
+            $this->setToken(null);
+        }
+        // $this->refreshTokenIfNecessary();
     }
 
     /**
@@ -296,7 +303,9 @@ class GoogleClient extends \Google_Client
      */
     public function isAuthenticated()
     {
-        return !empty($this->token['access_token']) && !$this->isAccessTokenExpired();
+        return !empty($this->token['access_token']) &&
+            !$this->isAccessTokenExpired() &&
+            $this->email;
     }
 
     /**
